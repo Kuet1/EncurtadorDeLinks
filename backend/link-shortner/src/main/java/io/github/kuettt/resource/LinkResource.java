@@ -1,16 +1,18 @@
 package io.github.kuettt.resource;
 
 import io.github.kuettt.dto.CreateLinkRequestDto;
+import io.github.kuettt.dto.DailyClicksResponseDto;
 import io.github.kuettt.dto.LinkResponseDto;
 import io.github.kuettt.dto.LinkStatsResponseDto;
 import io.github.kuettt.entity.ClickEntity;
 import io.github.kuettt.entity.LinkEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
@@ -58,7 +60,24 @@ public class LinkResource {
     @GET
     @Path("/{code}/stats")
     public LinkStatsResponseDto stats(@PathParam("code") String code) {
-        return null;
+        LinkEntity link = LinkEntity.find("code", code).firstResult();
+
+        if (link == null) {
+            throw new NotFoundException();
+        }
+
+        long total = ClickEntity.count("link", link);
+        List<DailyClicksResponseDto> clicksByDay = ClickEntity.getEntityManager().createQuery(
+                "select new io.github.kuettt.dto.DailyClicksResponseDto(cast(c.clickedAt as LocalDate), count(c)) "
+                        + "from ClickEntity c "
+                        + "where c.link = :link "
+                        + "group by cast(c.clickedAt as LocalDate) "
+                        + "order by cast(c.clickedAt as LocalDate)",
+                DailyClicksResponseDto.class)
+                .setParameter("link", link)
+                .getResultList();
+
+        return new LinkStatsResponseDto(link.code, link.originalUrl, link.createdAt, total, clicksByDay);
     }
 
     @DELETE

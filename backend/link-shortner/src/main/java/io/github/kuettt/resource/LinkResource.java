@@ -82,8 +82,15 @@ public class LinkResource {
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public Response delete(@PathParam("id") Long id) {
-        return null;
+        boolean deleted = LinkEntity.deleteById(id);
+
+        if (!deleted) {
+            throw new NotFoundException();
+        }
+
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     private boolean codeExists(String code) {

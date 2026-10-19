@@ -4,6 +4,8 @@ package io.github.kuettt.resource;
 import io.github.kuettt.dto.CreateLinkRequestDto;
 import io.github.kuettt.dto.LinkResponseDto;
 import io.github.kuettt.dto.LinkStatsResponseDto;
+import io.github.kuettt.entity.LinkEntity;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.POST;
@@ -12,22 +14,66 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
+import java.security.SecureRandom;
 import java.util.List;
 
 @Path("/api/links")
 public class LinkResource {
 
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    private static final int CODE_LENGTH = 6;
+
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     @POST
-    public Response create(@Valid  CreateLinkRequestDto request){ return null; }
+    @Transactional
+    public Response create(@Valid CreateLinkRequestDto request) {
+
+        LinkEntity link = new LinkEntity();
+
+        link.originalUrl = request.originalUrl();
+        link.code = generateUniqueCode();
+        link.persistAndFlush();
+
+        LinkResponseDto linkDto = new LinkResponseDto(link.id, link.code, link.originalUrl, link.createdAt, 0);
+
+        return Response.status(Response.Status.CREATED).entity(linkDto).build();
+    }
 
     @GET
-    public List<LinkResponseDto> list(){ return null;}
+    public List<LinkResponseDto> list() {
+        return null;
+    }
 
     @GET
     @Path("/{code}/stats")
-    public LinkStatsResponseDto stats(@PathParam("code") String code){ return null; }
+    public LinkStatsResponseDto stats(@PathParam("code") String code) {
+        return null;
+    }
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id){ return null; }
+    public Response delete(@PathParam("id") Long id) {
+        return null;
+    }
+
+    private boolean codeExists(String code){
+        return LinkEntity.count("code", code) > 0;
+    }
+
+    private String generateUniqueCode() {
+        while (true) {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < CODE_LENGTH; i++) {
+                int index = RANDOM.nextInt(ALPHABET.length());
+                sb.append(ALPHABET.charAt(index));
+            }
+            String code = sb.toString();
+            if (!codeExists(code)){
+                return code;
+            }
+        }
+    }
 }

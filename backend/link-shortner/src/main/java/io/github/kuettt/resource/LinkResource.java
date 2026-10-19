@@ -1,9 +1,9 @@
 package io.github.kuettt.resource;
 
-
 import io.github.kuettt.dto.CreateLinkRequestDto;
 import io.github.kuettt.dto.LinkResponseDto;
 import io.github.kuettt.dto.LinkStatsResponseDto;
+import io.github.kuettt.entity.ClickEntity;
 import io.github.kuettt.entity.LinkEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -15,11 +15,11 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/api/links")
 public class LinkResource {
-
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     private static final int CODE_LENGTH = 6;
@@ -29,7 +29,6 @@ public class LinkResource {
     @POST
     @Transactional
     public Response create(@Valid CreateLinkRequestDto request) {
-
         LinkEntity link = new LinkEntity();
 
         link.originalUrl = request.originalUrl();
@@ -43,7 +42,17 @@ public class LinkResource {
 
     @GET
     public List<LinkResponseDto> list() {
-        return null;
+        List<LinkEntity> allLinks = LinkEntity.listAll();
+
+        List<LinkResponseDto> result = new ArrayList<>();
+
+        for (LinkEntity link : allLinks) {
+            long total = ClickEntity.count("link", link);
+            LinkResponseDto linkDto = new LinkResponseDto(link.id, link.code, link.originalUrl, link.createdAt, total);
+            result.add(linkDto);
+        }
+
+        return result;
     }
 
     @GET
@@ -58,7 +67,7 @@ public class LinkResource {
         return null;
     }
 
-    private boolean codeExists(String code){
+    private boolean codeExists(String code) {
         return LinkEntity.count("code", code) > 0;
     }
 
@@ -71,7 +80,7 @@ public class LinkResource {
                 sb.append(ALPHABET.charAt(index));
             }
             String code = sb.toString();
-            if (!codeExists(code)){
+            if (!codeExists(code)) {
                 return code;
             }
         }

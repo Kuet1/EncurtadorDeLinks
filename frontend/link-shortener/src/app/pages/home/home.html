@@ -1,4 +1,16 @@
 <h1>Lista</h1>
+<section class="form">
+  <form (submit)="onSubmit($event)">
+    <label for="url">URL</label>
+    <input type="url" id="url" [formField]="linkForm.originalUrl" />
+    @if (linkForm.originalUrl().touched()) {
+      @for (error of linkForm.originalUrl().errors(); track error.message) {
+        <p>{{ error.message }}</p>
+      }
+    }
+    <button type="submit">Encurtar</button>
+  </form>
+</section>
 <section class="list">
   <ul>
     @for (link of links(); track link.id) {

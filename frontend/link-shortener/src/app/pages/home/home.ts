@@ -29,6 +29,15 @@ export class Home implements OnInit {
 
   protected onSubmit(event: Event): void {
     event.preventDefault();
-    console.log(this.linkModel());
+
+    if (this.linkForm().invalid()) {
+      this.linkForm().markAsTouched();
+      return;
+    }
+
+    this.linkService.create(this.linkModel()).subscribe((created) => {
+      this.links.update((links) => [created, ...links]);
+      this.linkForm().reset({ originalUrl: '' });
+    });
   }
 }

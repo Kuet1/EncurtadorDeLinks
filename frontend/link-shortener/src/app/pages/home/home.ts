@@ -40,4 +40,14 @@ export class Home implements OnInit {
       this.linkForm().reset({ originalUrl: '' });
     });
   }
+
+  protected onDelete(id: number): void {
+    if (!confirm('Tem certeza que deseja excluir este link?')) {
+      return;
+    }
+
+    this.linkService.delete(id).subscribe(() => {
+      this.links.update((links) => links.filter((link) => link.id !== id));
+    });
+  }
 }

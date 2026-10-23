@@ -1,1 +1,18 @@
-<p>home works!</p>
+<h1>Lista</h1>
+<section class="list">
+  <ul>
+    @for (link of links(); track link.id) {
+      <li>
+        <span>{{ link.originalUrl }}</span>
+        <span>{{ link.code }}</span>
+        <span>{{ link.totalClicks }}</span>
+        <span>{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+      </li>
+    } @empty {
+      <li>
+        <h2>A lista ainda está vazia...</h2>
+        <p>Em breve novos links devem aparecer</p>
+      </li>
+    }
+  </ul>
+</section>

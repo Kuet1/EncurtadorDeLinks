@@ -12,6 +12,8 @@ import { LinkService } from '../../services/link.service';
 })
 export class Home implements OnInit {
   private readonly linkService = inject(LinkService);
+  private readonly shortUrlBase = 'http://localhost:8080';
+
   protected readonly links = signal<LinkResponseDto[]>([]);
 
   protected readonly linkModel = signal<CreateLinkRequestDto>({ originalUrl: '' });
@@ -49,5 +51,9 @@ export class Home implements OnInit {
     this.linkService.delete(id).subscribe(() => {
       this.links.update((links) => links.filter((link) => link.id !== id));
     });
+  }
+
+  protected onCopy(code: string): void {
+    navigator.clipboard.writeText(`${this.shortUrlBase}/${code}`);
   }
 }

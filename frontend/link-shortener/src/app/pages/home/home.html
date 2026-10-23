@@ -19,6 +19,7 @@
         <span>{{ link.code }}</span>
         <span>{{ link.totalClicks }}</span>
         <span>{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+        <button type="button" (click)="onCopy(link.code)">Copiar</button>
         <button type="button" (click)="onDelete(link.id)">Excluir</button>
       </li>
     } @empty {

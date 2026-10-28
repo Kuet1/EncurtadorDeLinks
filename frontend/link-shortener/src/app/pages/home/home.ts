@@ -1,11 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { form, FormField, pattern, required } from '@angular/forms/signals';
+import { RouterLink } from '@angular/router';
 import { CreateLinkRequestDto, LinkResponseDto } from '../../models/link';
 import { LinkService } from '../../services/link.service';
 
 @Component({
-  imports: [DatePipe, FormField],
+  imports: [DatePipe, FormField, RouterLink],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',

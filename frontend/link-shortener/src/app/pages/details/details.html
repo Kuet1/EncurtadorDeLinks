@@ -1,7 +1,9 @@
+<a routerLink="/">Voltar</a>
 @if (stats(); as stats) {
-  <p>{{ stats.code }}</p>
-  <p>{{ stats.originalUrl }}</p>
-  <p>{{ stats.totalClicks }}</p>
+  <h1>{{ stats.code }}</h1>
+  <a [href]="stats.originalUrl">{{ stats.originalUrl }}</a>
+  <p>Total de cliques: {{ stats.totalClicks }}</p>
+  <p>Criado em: {{ stats.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
   <table>
     <thead>
       <tr>
@@ -22,7 +24,6 @@
       }
     </tbody>
   </table>
-  <p>{{ stats.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
 } @else {
   <p>Carregando...</p>
 }

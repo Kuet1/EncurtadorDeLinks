@@ -1,10 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LinkStatsResponseDto } from '../../models/link';
 import { LinkService } from '../../services/link.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   selector: 'app-details',
   styleUrl: './details.css',
   templateUrl: './details.html',

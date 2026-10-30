@@ -24,6 +24,8 @@
       }
     </tbody>
   </table>
+} @else if (errorMessage()) {
+  <p>{{ errorMessage() }}</p>
 } @else {
   <p>Carregando...</p>
 }

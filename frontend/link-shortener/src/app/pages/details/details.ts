@@ -17,7 +17,12 @@ export class Details implements OnInit {
 
   protected readonly stats = signal<LinkStatsResponseDto | null>(null);
 
+  protected readonly errorMessage = signal<string | null>(null);
+
   ngOnInit(): void {
-    this.linkService.stats(this.code()).subscribe((stats) => this.stats.set(stats));
+    this.linkService.stats(this.code()).subscribe({
+      next: (stats) => this.stats.set(stats),
+      error: () => this.errorMessage.set('Link não encontrado'),
+    });
   }
 }

@@ -12,21 +12,27 @@
   </form>
 </section>
 <section class="list">
-  <ul>
-    @for (link of links(); track link.id) {
-      <li>
-        <span>{{ link.originalUrl }}</span>
-        <a [routerLink]="['/links', link.code]">{{ link.code }}</a>
-        <span>{{ link.totalClicks }}</span>
-        <span>{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-        <button type="button" (click)="onCopy(link.code)">Copiar</button>
-        <button type="button" (click)="onDelete(link.id)">Excluir</button>
-      </li>
-    } @empty {
-      <li>
-        <h2>A lista ainda está vazia...</h2>
-        <p>Em breve novos links devem aparecer</p>
-      </li>
-    }
-  </ul>
+  @if (links(); as links) {
+    <ul>
+      @for (link of links; track link.id) {
+        <li>
+          <span>{{ link.originalUrl }}</span>
+          <a [routerLink]="['/links', link.code]">{{ link.code }}</a>
+          <span>{{ link.totalClicks }}</span>
+          <span>{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          <button type="button" (click)="onCopy(link.code)">Copiar</button>
+          <button type="button" (click)="onDelete(link.id)">Excluir</button>
+        </li>
+      } @empty {
+        <li>
+          <h2>A lista ainda está vazia...</h2>
+          <p>Em breve novos links devem aparecer</p>
+        </li>
+      }
+    </ul>
+  } @else if (errorMessage()) {
+    <p>{{ errorMessage() }}</p>
+  } @else {
+    <p>Carregando...</p>
+  }
 </section>

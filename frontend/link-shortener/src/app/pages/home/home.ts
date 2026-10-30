@@ -15,9 +15,11 @@ export class Home implements OnInit {
   private readonly linkService = inject(LinkService);
   private readonly shortUrlBase = 'http://localhost:8080';
 
-  protected readonly links = signal<LinkResponseDto[]>([]);
+  protected readonly links = signal<LinkResponseDto[] | null>(null);
 
   protected readonly linkModel = signal<CreateLinkRequestDto>({ originalUrl: '' });
+
+  protected readonly errorMessage = signal<string | null>(null);
 
   protected readonly linkForm = form(this.linkModel, (link) => {
     required(link.originalUrl, { message: 'Informe uma URL.' });
@@ -27,7 +29,11 @@ export class Home implements OnInit {
   });
 
   ngOnInit(): void {
-    this.linkService.list().subscribe((links) => this.links.set(links));
+    this.linkService.list().subscribe({
+      next: (links) => this.links.set(links),
+      error: () =>
+        this.errorMessage.set('Não foi possível carregar os links. Tente novamente mais tarde'),
+    });
   }
 
   protected onSubmit(event: Event): void {
@@ -39,7 +45,7 @@ export class Home implements OnInit {
     }
 
     this.linkService.create(this.linkModel()).subscribe((created) => {
-      this.links.update((links) => [created, ...links]);
+      this.links.update((links) => [created, ...(links ?? [])]);
       this.linkForm().reset({ originalUrl: '' });
     });
   }
@@ -50,7 +56,7 @@ export class Home implements OnInit {
     }
 
     this.linkService.delete(id).subscribe(() => {
-      this.links.update((links) => links.filter((link) => link.id !== id));
+      this.links.update((links) => (links ?? []).filter((link) => link.id !== id));
     });
   }
 

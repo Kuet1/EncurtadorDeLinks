@@ -9,6 +9,9 @@
       }
     }
     <button type="submit">Encurtar</button>
+    @if (createErrorMessage()) {
+      <p>{{ createErrorMessage() }}</p>
+    }
   </form>
 </section>
 <section class="list">

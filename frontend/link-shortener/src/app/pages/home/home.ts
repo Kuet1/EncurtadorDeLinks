@@ -21,6 +21,8 @@ export class Home implements OnInit {
 
   protected readonly errorMessage = signal<string | null>(null);
 
+  protected readonly createErrorMessage = signal<string | null>(null);
+
   protected readonly linkForm = form(this.linkModel, (link) => {
     required(link.originalUrl, { message: 'Informe uma URL.' });
     pattern(link.originalUrl, /^https?:\/\/\S+\.\S+$/, {
@@ -32,21 +34,29 @@ export class Home implements OnInit {
     this.linkService.list().subscribe({
       next: (links) => this.links.set(links),
       error: () =>
-        this.errorMessage.set('Não foi possível carregar os links. Tente novamente mais tarde'),
+        this.errorMessage.set('Não foi possível carregar os links. Tente novamente mais tarde.'),
     });
   }
 
   protected onSubmit(event: Event): void {
     event.preventDefault();
 
+    this.createErrorMessage.set(null);
+
     if (this.linkForm().invalid()) {
       this.linkForm().markAsTouched();
       return;
     }
 
-    this.linkService.create(this.linkModel()).subscribe((created) => {
-      this.links.update((links) => [created, ...(links ?? [])]);
-      this.linkForm().reset({ originalUrl: '' });
+    this.linkService.create(this.linkModel()).subscribe({
+      next: (created) => {
+        this.links.update((links) => [created, ...(links ?? [])]);
+        this.linkForm().reset({ originalUrl: '' });
+      },
+      error: () =>
+        this.createErrorMessage.set(
+          'Não foi possível encurtar o link. Tente novamente mais tarde.',
+        ),
     });
   }
 

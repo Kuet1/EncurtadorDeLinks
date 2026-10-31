@@ -23,6 +23,8 @@ export class Home implements OnInit {
 
   protected readonly createErrorMessage = signal<string | null>(null);
 
+  protected readonly deleteErrorMessage = signal<string | null>(null);
+
   protected readonly linkForm = form(this.linkModel, (link) => {
     required(link.originalUrl, { message: 'Informe uma URL.' });
     pattern(link.originalUrl, /^https?:\/\/\S+\.\S+$/, {
@@ -61,12 +63,18 @@ export class Home implements OnInit {
   }
 
   protected onDelete(id: number): void {
+    this.deleteErrorMessage.set(null);
+
     if (!confirm('Tem certeza que deseja excluir este link?')) {
       return;
     }
 
-    this.linkService.delete(id).subscribe(() => {
-      this.links.update((links) => (links ?? []).filter((link) => link.id !== id));
+    this.linkService.delete(id).subscribe({
+      next: () => {
+        this.links.update((links) => (links ?? []).filter((link) => link.id !== id));
+      },
+      error: () =>
+        this.deleteErrorMessage.set('Não foi possível excluir o link. Tente novamente mais tarde.'),
     });
   }
 

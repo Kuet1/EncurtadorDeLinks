@@ -33,6 +33,9 @@
         </li>
       }
     </ul>
+    @if (deleteErrorMessage()) {
+      <p>{{ deleteErrorMessage() }}</p>
+    }
   } @else if (errorMessage()) {
     <p>{{ errorMessage() }}</p>
   } @else {

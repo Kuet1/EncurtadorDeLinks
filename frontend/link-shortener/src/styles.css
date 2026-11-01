@@ -33,3 +33,10 @@ button,
 input {
   font: inherit;
 }
+
+.container {
+  max-width: 45rem;
+  padding-inline: var(--space-3);
+  padding-block: var(--space-3);
+  margin-inline: auto;
+}

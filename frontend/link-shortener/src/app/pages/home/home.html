@@ -5,12 +5,12 @@
     <input type="url" id="url" [formField]="linkForm.originalUrl" />
     @if (linkForm.originalUrl().touched()) {
       @for (error of linkForm.originalUrl().errors(); track error.message) {
-        <p>{{ error.message }}</p>
+        <p class="error">{{ error.message }}</p>
       }
     }
     <button type="submit">Encurtar</button>
     @if (createErrorMessage()) {
-      <p>{{ createErrorMessage() }}</p>
+      <p class="error">{{ createErrorMessage() }}</p>
     }
   </form>
 </section>
@@ -34,10 +34,10 @@
       }
     </ul>
     @if (deleteErrorMessage()) {
-      <p>{{ deleteErrorMessage() }}</p>
+      <p class="error">{{ deleteErrorMessage() }}</p>
     }
   } @else if (errorMessage()) {
-    <p>{{ errorMessage() }}</p>
+    <p class="error">{{ errorMessage() }}</p>
   } @else {
     <p>Carregando...</p>
   }

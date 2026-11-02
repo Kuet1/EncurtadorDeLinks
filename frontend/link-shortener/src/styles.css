@@ -68,14 +68,14 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-.error {
-  color: var(--color-error);
-}
-
 a {
   color: var(--color-primary);
 }
 
 a:hover {
   color: var(--color-primary-hover);
+}
+
+.error {
+  color: var(--color-error);
 }

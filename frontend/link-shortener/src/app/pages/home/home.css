@@ -24,6 +24,12 @@ li {
   padding: var(--space-3);
 }
 
+.original-url {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .form {
   margin-bottom: var(--space-5);
 }

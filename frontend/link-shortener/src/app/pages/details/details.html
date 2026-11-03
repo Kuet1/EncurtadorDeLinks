@@ -1,7 +1,7 @@
 <a routerLink="/">Voltar</a>
 @if (stats(); as stats) {
   <h1>{{ stats.code }}</h1>
-  <a [href]="stats.originalUrl">{{ stats.originalUrl }}</a>
+  <a class="original-url" [href]="stats.originalUrl">{{ stats.originalUrl }}</a>
   <p>Total de cliques: {{ stats.totalClicks }}</p>
   <p>Criado em: {{ stats.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
   <table>

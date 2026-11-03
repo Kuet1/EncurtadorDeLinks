@@ -19,10 +19,26 @@
     <ul>
       @for (link of links; track link.id) {
         <li>
-          <span class="original-url" [title]="link.originalUrl">{{ link.originalUrl }}</span>
-          <a [routerLink]="['/links', link.code]">{{ link.code }}</a>
-          <span>{{ link.totalClicks }}</span>
-          <span>{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          <dl>
+            <div>
+              <dt>URL</dt>
+              <dd class="original-url" [title]="link.originalUrl">{{ link.originalUrl }}</dd>
+            </div>
+            <div>
+              <dt>Código</dt>
+              <dd>
+                <a [routerLink]="['/links', link.code]">{{ link.code }}</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Cliques</dt>
+              <dd>{{ link.totalClicks }}</dd>
+            </div>
+            <div>
+              <dt>Criado em</dt>
+              <dd>{{ link.createdAt | date: 'dd/MM/yyyy HH:mm' }}</dd>
+            </div>
+          </dl>
           <div class="action-buttons">
             <button type="button" (click)="onCopy(link.code)">Copiar</button>
             <button type="button" (click)="onDelete(link.id)">Excluir</button>

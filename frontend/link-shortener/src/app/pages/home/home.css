@@ -17,14 +17,34 @@ ul {
 li {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-3);
   background-color: #fff;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: var(--space-3);
 }
 
+dl {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+dl div {
+  display: flex;
+  gap: var(--space-1);
+}
+
+dt {
+  font-weight: bold;
+}
+
+dt::after {
+  content: ':';
+}
+
 .original-url {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

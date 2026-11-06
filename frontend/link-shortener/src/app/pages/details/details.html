@@ -2,7 +2,6 @@
 @if (stats(); as stats) {
   <h1>{{ stats.code }}</h1>
   <a class="original-url" [href]="stats.originalUrl">{{ stats.originalUrl }}</a>
-  <p>Total de cliques: {{ stats.totalClicks }}</p>
   <p>Criado em: {{ stats.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
   <table>
     <thead>
@@ -23,6 +22,12 @@
         </tr>
       }
     </tbody>
+    <tfoot>
+      <tr>
+        <th>Total</th>
+        <td>{{ stats.totalClicks }}</td>
+      </tr>
+    </tfoot>
   </table>
 } @else if (errorMessage()) {
   <p class="error">{{ errorMessage() }}</p>

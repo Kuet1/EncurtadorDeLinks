@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { form, FormField, pattern, required } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { CreateLinkRequestDto, LinkResponseDto } from '../../models/link';
 import { LinkService } from '../../services/link.service';
 
@@ -13,7 +14,7 @@ import { LinkService } from '../../services/link.service';
 })
 export class Home implements OnInit {
   private readonly linkService = inject(LinkService);
-  private readonly shortUrlBase = 'http://localhost:8080';
+  private readonly shortUrlBase = environment.shortUrlBase;
 
   protected readonly links = signal<LinkResponseDto[] | null>(null);
 

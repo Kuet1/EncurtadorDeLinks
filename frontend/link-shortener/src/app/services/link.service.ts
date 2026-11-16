@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { CreateLinkRequestDto, LinkResponseDto, LinkStatsResponseDto } from '../models/link';
 
 @Service()
 export class LinkService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = '/api/links';
+  private readonly baseUrl = environment.apiUrl + '/api/links';
 
   list(): Observable<LinkResponseDto[]> {
     return this.http.get<LinkResponseDto[]>(this.baseUrl);

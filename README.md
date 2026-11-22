@@ -6,6 +6,8 @@ Projeto de estudo: usei o Claude Code como tutor para aprender Angular, TypeScri
 
 **Acesse:** https://linksshortenerproject.netlify.app
 
+![Tela inicial do Encurtador de Links](docs/Screenshot.png)
+
 ## Avisos importantes
 
 - **Primeiro acesso lento:** o backend está no plano gratuito do Render, que desliga o servidor depois de 15 minutos sem uso. O primeiro acesso depois disso pode levar cerca de 1 minuto; os seguintes são normais.
